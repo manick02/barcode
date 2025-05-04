@@ -64,6 +64,38 @@ func (qr *QRCode) GenQrCode() {
 	}
 }
 
+func (qr *QRCode) Decode() [][]int {
+	fileName := "qr.png"
+	file, err := os.Open(fileName)
+	if err != nil {
+		panic(err)
+	}
+	img, _, err := image.Decode(file)
+	if err != nil {
+		panic(err)
+	}
+	bounds := img.Bounds()
+	width, height := bounds.Max.X, bounds.Max.Y
+	qrPattern := make([][]int, height)
+	for i := range qrPattern {
+		qrPattern[i] = make([]int, width)
+	}
+	threshold := uint32(128 * 128 * 128)
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			r, g, b, _ := img.At(x, y).RGBA()
+			// Simple grayscale conversion and thresholding
+			luminance := (r + g + b) / 3
+			if luminance < threshold {
+				qrPattern[y][x] = 1 // Black
+			} else {
+				qrPattern[y][x] = 0 // White
+			}
+		}
+	}
+	return qrPattern
+}
+
 func NewQrCode() QRCode {
 	return QRCode{}
 }
