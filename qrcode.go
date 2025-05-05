@@ -39,15 +39,23 @@ func (qr *QRCode) GenQrCode() {
 		{1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0},
 		{1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1},
 	}
-	img := image.NewRGBA(image.Rect(0, 0, len(qrPattern[0]), len(qrPattern)))
+	quietZone := 4
 	black := color.RGBA{0, 0, 0, 255}
 	white := color.RGBA{255, 255, 255, 255}
+
+	patternSize := len(qrPattern)
+	fullSize := patternSize + 2*quietZone
+	img := image.NewRGBA(image.Rect(0, 0, fullSize, fullSize))
+	for y := 0; y < fullSize; y++ {
+		for x := 0; x < fullSize; x++ {
+			img.Set(x, y, white)
+		}
+	}
+
 	for y, row := range qrPattern {
 		for x, col := range row {
 			if col == 1 {
-				img.Set(y, x, black)
-			} else {
-				img.Set(y, x, white)
+				img.Set(x+quietZone, y+quietZone, black)
 			}
 		}
 
