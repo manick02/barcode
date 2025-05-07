@@ -2,7 +2,7 @@ package barcode
 
 import "testing"
 
-func TestDummTest(t *testing.T) {
+func TestQrGen(t *testing.T) {
 	qr := NewQrCode()
 	qr.GenQrCode()
 }

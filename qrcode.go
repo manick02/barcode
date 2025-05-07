@@ -17,7 +17,7 @@ type QRCode struct {
 func (qr *QRCode) GenQrCode() {
 	// fixed  code
 	qrPattern := [][]int{
-		{1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1},
 		{1, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1},
 		{1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1},
 		{1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1},
@@ -60,6 +60,10 @@ func (qr *QRCode) GenQrCode() {
 		}
 
 	}
+	qr.saveFile(img)
+}
+
+func (*QRCode) saveFile(img *image.RGBA) {
 	file, err := os.Create("./qr.png")
 	if err != nil {
 		panic(err)
